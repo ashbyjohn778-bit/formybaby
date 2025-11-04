@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ice Bear's Adventure Book</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f0f8ff;
+    }
+    nav {
+      display: flex;
+      gap: 10px;
+      background: #333;
+      padding: 10px;
+    }
+    nav button {
+      color: white;
+      background: #444;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .page {
+      display: none;
+      padding: 20px;
+    }
+    .page.active {
+      display: block;
+    }
+    .ice-bear-img {
+      width: 100px;
+      height: 100px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <button onclick="changePage(1)">Fishing</button>
+    <button onclick="changePage(2)">Cooking</button>
+    <button onclick="changePage(3)">Chopping</button>
+    <button onclick="changePage(4)">Messages</button>
+    <button onclick="changePage(5)">Sleeping</button>
+  </nav>
+
+  <div id="page1" class="page active">
+    <div class="ice-bear-img" style="background-image: url('https://i.pinimg.com/736x/3b/75/b3/3b75b3a21cb4fbca4b8f3987227af80a.jpg');"></div>
+    <h2>Fishing</h2>
+    <p>Catch 10 fish to continue.</p>
+    <button onclick="catchFish()">Catch Fish</button>
+    <p id="fishCount">Fish caught: 0/10</p>
+  </div>
+
+  <div id="page2" class="page">
+    <div class="ice-bear-img" style="background-image: url('https://i.pinimg.com/736x/69/77/99/6977990bae9aa2c4fda0383d0fd39520.jpg');"></div>
+    <h2>Cooking</h2>
+    <p>Select 3 ingredients.</p>
+    <button onclick="selectIngredient()">Select Ingredient</button>
+    <p id="ingredientCount">Ingredients: 0/3</p>
+  </div>
+
+  <div id="page3" class="page">
+    <div class="ice-bear-img" style="background-image: url('https://i.pinimg.com/564x/8d/70/9b/8d709bcb7f0b6665a93e862b54329b56.jpg');"></div>
+    <h2>Chopping Wood</h2>
+    <p>Chop 10 logs.</p>
+    <button onclick="chopWood()">Chop</button>
+    <p id="chopCount">Logs chopped: 0/10</p>
+  </div>
+
+  <div id="page4" class="page">
+    <div class="ice-bear-img" style="background-image: url('https://i.pinimg.com/564x/8d/70/9b/8d709bcb7f0b6665a93e862b54329b56.jpg');"></div>
+    <h2>Messages</h2>
+    <textarea id="messageBox" placeholder="Write something..."></textarea><br />
+    <button onclick="submitMessage()">Submit</button>
+  </div>
+
+  <div id="page5" class="page">
+    <div class="ice-bear-img" style="background-image: url('https://i.pinimg.com/736x/03/48/2a/03482ac65ecae24704b706b58396f44e.jpg');"></div>
+    <h2>Sleeping</h2>
+    <p>Open the fridge once.</p>
+    <button onclick="openFridge(this)">Open Fridge</button>
+  </div>
+
+  <script>
+    let pageCompleted = { 1: false, 2: false, 3: false, 4: false, 5: false };
+    let fish = 0;
+    let ingredients = 0;
+    let chops = 0;
+
+    function changePage(pageNum) {
+      const current = document.querySelector('.page.active').id.replace('page','');
+      if (!pageCompleted[current] && Number(current) !== pageNum) {
+        alert('Finish this page before continuing!');
+        return;
+      }
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page'+pageNum).classList.add('active');
+    }
+
+    function catchFish() {
+      fish++;
+      document.getElementById('fishCount').innerText = `Fish caught: ${fish}/10`;
+      if (fish >= 10) {
+        pageCompleted[1] = true;
+        alert('Ice Bear is proud! You caught all the fish!');
+      }
+    }
+
+    function selectIngredient() {
+      ingredients++;
+      document.getElementById('ingredientCount').innerText = `Ingredients: ${ingredients}/3`;
+      if (ingredients >= 3) {
+        pageCompleted[2] = true;
+        alert('Perfect dish! Ice Bear approves!');
+      }
+    }
+
+    function chopWood() {
+      chops++;
+      document.getElementById('chopCount').innerText = `Logs chopped: ${chops}/10`;
+      if (chops >= 10) {
+        pageCompleted[3] = true;
+        alert('Wood is ready for winter!');
+      }
+    }
+
+    function submitMessage() {
+      const msg = document.getElementById('messageBox').value.trim();
+      if (msg.length > 0) {
+        pageCompleted[4] = true;
+        alert('Message sent!');
+      } else {
+        alert('Write something first!');
+      }
+    }
+
+    function openFridge(btn) {
+      pageCompleted[5] = true;
+      alert('Ice Bear sleeps peacefully...');
+    }
+  </script>
+</body>
+</html>
